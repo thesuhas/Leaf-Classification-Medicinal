@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_from_directory
 import os
 import tensorflow as tf
 import logging
@@ -10,6 +10,7 @@ import io
 import requests
 from bs4 import BeautifulSoup
 import re
+from werkzeug.utils import secure_filename
 
 IMAGE_SIZE = 100
 
@@ -17,7 +18,10 @@ IMAGE_SIZE = 100
 model = tf.keras.models.load_model("C:/Users/suhas/Documents/College Projects/Leaf-Classification-Medicinal/model")
 model.make_predict_function()
 
+UPLOAD_FOLDER = 'C:/Users/suhas/Documents/College Projects/Leaf-Classification-Medicinal/upload/'
+
 app = Flask(__name__, static_folder="C:/Users/suhas/Documents/College Projects/Leaf-Classification-Medicinal/")
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def label(prediction):
     prediction = prediction.argmax()
@@ -107,6 +111,7 @@ def home():
 
 @app.route("/predict", methods=["POST"])
 def pred_image():
+    file_img = request.files['file']
     img = request.files['file'].read()
     img = Image.open(io.BytesIO(img))
     # Converting image to np array
@@ -124,12 +129,20 @@ def pred_image():
     resarr= list(results.descendants)
     sci_name = sci_name.split('+')
     sci_name = sci_name[0] + ' ' + sci_name[1]
+    img = img.resize((300, 300))
+    img.save(os.path.join(app.config['UPLOAD_FOLDER'],file_img.filename))
+    #print(os.path.join(app.config['UPLOAD_FOLDER'], file_img.filename), flush=True)
+    #print(file_img.filename, flush=True)
     try: 
         medprop= resarr[-1]
         medprop= re.sub('\[.*?\]',' ',medprop)
-        return render_template("pred.html", medprop=medprop, species=species, sci_name=sci_name)
+        return render_template("pred.html", medprop=medprop, species=species, sci_name=sci_name, img=file_img.filename)
     except IndexError: 
-        return render_template("pred.html", medprop="No Medicinal Properties Available", species=species, sci_name=sci_name)
+        return render_template("pred.html", medprop="No Medicinal Properties Available", species=species, sci_name=sci_name, img=file_img.filename)
+
+@app.route('/uploads/<filename>')
+def send_file(filename):
+    return send_from_directory(UPLOAD_FOLDER, filename)
 
 if __name__ == '__main__':
     app.run(debug=True)

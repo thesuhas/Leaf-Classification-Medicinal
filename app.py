@@ -91,17 +91,17 @@ def label(prediction):
         return ('tangerine', 'citrus reticulata')
 
 def predict(img, model):
-    imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    imgBlur = cv2.GaussianBlur(imgGray, (3, 3), 0)
-    thresh, imgBW = cv2.threshold(imgBlur, 128, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
-    imgInv = cv2.bitwise_not(imgBW)
-    kernel = np.ones((50, 50))
-    imgClosed = cv2.morphologyEx(imgInv, cv2.MORPH_CLOSE, kernel)
+    #imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    #imgBlur = cv2.GaussianBlur(imgGray, (3, 3), 0)
+    #thresh, imgBW = cv2.threshold(imgBlur, 128, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
+    #imgInv = cv2.bitwise_not(imgBW)
+    #kernel = np.ones((50, 50))
+    #imgClosed = cv2.morphologyEx(imgInv, cv2.MORPH_CLOSE, kernel)
     # Resize
-    new = cv2.resize(imgClosed, (IMAGE_SIZE, IMAGE_SIZE))
+    new = cv2.resize(img, (IMAGE_SIZE, IMAGE_SIZE))
     #Adding third dimension to shape
-    new.shape = (1,) + new.shape + (1, )
-    #print(new.shape, flush=True)
+    #new.shape = (1,) + new.shape + (1, )
+    print(new.shape, img.shape,flush=True)
     pred = model.predict(new)
     return pred
 

@@ -15,16 +15,17 @@ from werkzeug.utils import secure_filename
 IMAGE_SIZE = 100
 
 # Loading model
-model = tf.keras.models.load_model("C:/Users/suhas/Documents/College Projects/Leaf-Classification-Medicinal/model")
+model = tf.keras.models.load_model("C:\\Users\\suhas\\Documents\\College Projects\\Leaf-Classification-Medicinal\\model")
 model.make_predict_function()
 
-UPLOAD_FOLDER = 'C:/Users/suhas/Documents/College Projects/Leaf-Classification-Medicinal/upload/'
+UPLOAD_FOLDER = 'C:\\Users\\suhas\\Documents\\College Projects\\Leaf-Classification-Medicinal\\upload\\'
 
-app = Flask(__name__, static_folder="C:/Users/suhas/Documents/College Projects/Leaf-Classification-Medicinal/")
+app = Flask(__name__, static_folder="C:\\Users\\suhas\\Documents\\College Projects\\Leaf-Classification-Medicinal\\")
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def label(prediction):
     prediction = prediction.argmax()
+    print(prediction)
     if prediction == 0:
         return ('pubescent bamboo', 'Phyllostachys edulis')
     elif prediction == 1:
@@ -101,8 +102,10 @@ def predict(img, model):
     new = cv2.resize(img, (IMAGE_SIZE, IMAGE_SIZE))
     #Adding third dimension to shape
     #new.shape = (1,) + new.shape + (1, )
-    print(new.shape, img.shape,flush=True)
+    new.shape = (1, ) + new.shape
+    #print(new.shape, img.shape,flush=True)
     pred = model.predict(new)
+    #print(pred, flush= True)
     return pred
 
 @app.route("/")
@@ -117,6 +120,7 @@ def pred_image():
     # Converting image to np array
     img2 = np.array(img)
     species = predict(img2, model)
+    #print("Prediction: ", species, flush=True)
     (species, sci_name) = label(species)
     
     # Web Scraping

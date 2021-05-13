@@ -169,15 +169,17 @@ def pred_image():
     sci_name = sci_name.split('+')
     sci_name = sci_name[0] + ' ' + sci_name[1]
     img = img.resize((300, 300))
-    img.save(os.path.join(app.config['UPLOAD_FOLDER'],file_img.filename))
+    print(file_img.filename[:-3] + "jpg", flush=True)
+    filename = file_img.filename[:-3] + "jpg"
+    img.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
     #print(os.path.join(app.config['UPLOAD_FOLDER'], file_img.filename), flush=True)
     #print(file_img.filename, flush=True)
     try: 
         medprop= resarr[-1]
         medprop= re.sub('\[.*?\]',' ',medprop)
-        return render_template("pred.html", medprop=medprop, species=species, sci_name=sci_name, img=file_img.filename)
+        return render_template("pred.html", medprop=medprop, species=species, sci_name=sci_name, img=filename)
     except IndexError: 
-        return render_template("pred.html", medprop="No Medicinal Properties Available", species=species, sci_name=sci_name, img=file_img.filename)
+        return render_template("pred.html", medprop="No Medicinal Properties Available", species=species, sci_name=sci_name, img=filename)
 
 @app.route('/uploads/<filename>')
 def send_file(filename):

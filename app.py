@@ -90,6 +90,38 @@ def label(prediction):
         return ('chinese tulip tree', 'liriodendron chinense')
     elif prediction == 31:
         return ('tangerine', 'citrus reticulata')
+    elif prediction == 32:
+        return ('European field elm', 'ulmus carpinifolia')
+    elif prediction == 33:
+        return ('Woolly flowered maple', 'acer erianthum')
+    elif prediction == 34:
+        return ('Round-eared Willow', 'salix aurita')
+    elif prediction == 35:
+        return ('White oak', 'quercus alba')
+    elif prediction == 36:
+        return ('Grey Alder', 'alnus incana')
+    elif prediction == 37:
+        return ('Downy Birch', 'betula pubescens')
+    elif prediction == 38:
+        return ('White Willow', 'salix alba')
+    elif prediction == 39:
+        return ('Aspen', 'populus tremula')
+    elif prediction == 40:
+        return ('Wych or Scotch Elm', 'ulmus glabra')
+    elif prediction == 41:
+        return ('Common Rowan', 'sorbus aucuparia')
+    elif prediction == 42:
+        return ('Gray willow', 'salix cinerea')
+    elif prediction == 43:
+        return ('Eastern Cottonwood', 'populus deltoides')
+    elif prediction == 44:
+        return ('Small-leaved Lime', 'tilia cordata')
+    elif prediction == 45:
+        return ('Swedish Whitebeam', 'sorbus intermedia')
+    elif prediction == 46:
+        return ('European Beech', 'fagus sylvatica')
+  
+
     
 
 def predict(img, model):

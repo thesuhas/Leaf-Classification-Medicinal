@@ -90,6 +90,7 @@ def label(prediction):
         return ('chinese tulip tree', 'liriodendron chinense')
     elif prediction == 31:
         return ('tangerine', 'citrus reticulata')
+    
 
 def predict(img, model):
     #imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -119,6 +120,8 @@ def pred_image():
     img = Image.open(io.BytesIO(img))
     # Converting image to np array
     img2 = np.array(img)
+    img2 = np.divide(img2, 255)
+    print(img2, flush=True)
     species = predict(img2, model)
     #print("Prediction: ", species, flush=True)
     (species, sci_name) = label(species)
